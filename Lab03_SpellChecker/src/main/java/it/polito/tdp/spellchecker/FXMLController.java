@@ -1,7 +1,14 @@
 package it.polito.tdp.spellchecker;
 
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+//import java.util.Dictionary;
 import java.util.ResourceBundle;
+import it.polito.tdp.spellchecker.model.*;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +25,9 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ComboBox<?> boxLanguage;
+    private ComboBox<String> boxLanguage;
+    
+    private ObservableList<String> lingue = FXCollections.observableArrayList("Italian", "English"); 
 
     @FXML
     private TextArea txtInput;
@@ -40,12 +49,31 @@ public class FXMLController {
 
     @FXML
     void doClearText(ActionEvent event) {
+    	
+    	txtInput.clear();
+    	txtWrongWords.clear();
 
     }
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	
+    	 Dictionary d = new Dictionary();
+         d.loadDictionary(boxLanguage.getValue());
+         d.setLanguage(boxLanguage.getValue());
+         List<String> testoInput = getInput();
+         d.spellCheckTextDichotomic(testoInput);
+         txtWrongWords.setText(d.getWrongWords());
+         txtErrors.setText("Ci sono " + d.getErrors() + " errori");
 
+    }
+    
+    private List<String> getInput () {
+    	List<String> stemp = new LinkedList<String>();
+    	for (String s : txtInput.getText().split(" ")) {
+    		stemp.add(s);
+    	}
+    	return stemp;
     }
 
     @FXML
@@ -57,6 +85,8 @@ public class FXMLController {
         assert txtErrors != null : "fx:id=\"txtErrors\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnClearText != null : "fx:id=\"btnClearText\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtTime != null : "fx:id=\"txtTime\" was not injected: check your FXML file 'Scene.fxml'.";
-
+        boxLanguage.setItems(lingue);
+        
+       
     }
 }

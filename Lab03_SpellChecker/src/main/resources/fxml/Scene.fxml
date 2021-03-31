@@ -27,7 +27,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="boxLanguage" prefWidth="150.0">
+                  <ComboBox fx:id="boxLanguage" id="boxLanguage" prefWidth="150.0">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
